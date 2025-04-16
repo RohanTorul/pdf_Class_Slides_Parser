@@ -1,0 +1,191 @@
+Artificial Intelligence (Page 1)	Lecture 19 On/Off Policy Learning Temporal-Difference Learning SARSA, Q-Learning
+On-Policy vs. Off-Policy (Page 2)	Chapter 5.4 to 5.6 in RL Textbook http://incompleteideas.net/book/first/ebook/node54.html
+On-Policy vs. Off-Policy (Page 3)	Recall MC ES algorithm presented before
+On-Policy vs. Off-Policy (Page 3)	We use the current policy to update values, then
+On-Policy vs. Off-Policy (Page 3)	use those values to update the policy We are improving the same policy that is used to
+On-Policy vs. Off-Policy (Page 3)	make decisions / guide learning (On-Policy) Off-Policy methods learn a different policy than the
+On-Policy vs. Off-Policy (Page 3)	one that is used to generate data Example: Use random/human actions to learn a policy
+On-Policy vs. Off-Policy (Page 3)	●
+MC Policy Iteration (Page 4)	(recall) Function MCPolicyIteration()
+MC Policy Iteration (Page 4)	1. q[s][a] = initial value estimates
+MC Policy Iteration (Page 4)	2. p[s][a] = initially equiprobable policy
+MC Policy Iteration (Page 4)	3. while true:
+MC Policy Iteration (Page 4)	4. e = generate episode based on p
+MC Policy Iteration (Page 4)	5. q = update value estimates based on episode returns
+MC Policy Iteration (Page 4)	6. p = update policy to choose actions with max values
+MC Policy Iteration (Page 4)	7. On-Policy: We generate episodes based on policy we update
+Off-Policy Example (Page 5)	Function RandomMCIteration()
+Off-Policy Example (Page 5)	1. q[s][a] = initial value estimates
+Off-Policy Example (Page 5)	2. p[s][a] = initially equiprobable policy
+Off-Policy Example (Page 5)	3. while true:
+Off-Policy Example (Page 5)	4. e = generate episode with random actions
+Off-Policy Example (Page 5)	5. q = update value estimates based on episode returns
+Off-Policy Example (Page 5)	6. p = update policy to choose actions with max values
+Off-Policy Example (Page 5)	7. Off-Policy: Policy we form does not guide episode generation
+On-Policy vs. Off-Policy (Page 6)	On-Policy updates the same policy that is used to
+On-Policy vs. Off-Policy (Page 6)	generate the actions Off-Policy updates a different policy than the one
+On-Policy vs. Off-Policy (Page 6)	used to generate actions On-Policy learns policy that takes exploration into
+On-Policy vs. Off-Policy (Page 6)	account (accounts for epsilon greedy, etc) Off-Policy can have poor online performance, but
+On-Policy vs. Off-Policy (Page 6)	● may result in better performance after learning
+On-Policy Control Methods (Page 7)	In On-P, the policy is generally soft
+On-Policy Control Methods (Page 7)	Chance to choose every action is > 0
+On-Policy Control Methods (Page 7)	π(a|s) > 0 for all s, a
+On-Policy Control Methods (Page 7)	As it learns, the policy moves toward a
+On-Policy Control Methods (Page 7)	deterministic optimal policy One example of on-policy methods is to
+On-Policy Control Methods (Page 7)	● use an ε-greedy policy to select actions
+ε-Greedy On-Policy Control (Page 8)	With probability ε choose random action
+ε-Greedy On-Policy Control (Page 8)	With probability 1-ε choose greedy action
+ε-Greedy On-Policy Control (Page 8)	In an ε-Greedy Policy:
+ε-Greedy On-Policy Control (Page 8)	Non-greedy actions have probability ε/|A(s)|
+ε-Greedy On-Policy Control (Page 8)	Greedy action has probability 1-ε+ε/|A(s)|
+ε-Greedy On-Policy Control (Page 8)	This is an example of an ε-soft policy
+ε-Greedy On-Policy Control (Page 8)	π(a|s) > ε for all s, a, and some ε > 0
+ε-Greedy On-Policy Control (Page 8)	●
+Monte-Carlo GPI / ε-soft (Page 9)	On-Policy MC is still GPI
+Monte-Carlo GPI / ε-soft (Page 9)	We use first-visit MC to perform policy evaluation and
+Monte-Carlo GPI / ε-soft (Page 9)	estimate current policy Without ES, if we simply make our policy greedy w.r.t.
+Monte-Carlo GPI / ε-soft (Page 9)	Q(s,a), we never explore, and many (s,a) pairs go unvisited ε-soft on-policy methods ensure that exploration occurs,
+Monte-Carlo GPI / ε-soft (Page 9)	and all (s,a) get visited However, the policy we learn is now only optimal within all
+Monte-Carlo GPI / ε-soft (Page 9)	● ε-soft policies, but in practice it is still quite good
+On-Policy Policy Optimality (Page 10)	On-Policy methods update the policy with
+On-Policy Policy Optimality (Page 10)	the randomness of ε-greedy included If the environment has hazardous
+On-Policy Policy Optimality (Page 10)	features with strong negative rewards, ε-greedy will encounter them This results in a policy that can be overly
+On-Policy Policy Optimality (Page 10)	● cautious and not ‘globally optimal’
+On-Policy First-Visit MC (ε-soft) (Page 11)	Initialization:
+On-Policy First-Visit MC (ε-soft) (Page 11)	1. Q[s][a] = initial value for each state
+On-Policy First-Visit MC (ε-soft) (Page 11)	2. P[s][a] = initially equiprobable policy Repeat Forever (Learning):
+On-Policy First-Visit MC (ε-soft) (Page 11)	1. Generate episode using policy P
+On-Policy First-Visit MC (ε-soft) (Page 11)	2. for each tuple (s,a,r) in the episode: // value updates
+On-Policy First-Visit MC (ε-soft) (Page 11)	3. G = the return (sum of r) following first occurrence of (s,a) in E
+On-Policy First-Visit MC (ε-soft) (Page 11)	4. Q[s][a] = Q[s][a] + stepSize * (G – Q[s][a]) // any update rule
+On-Policy First-Visit MC (ε-soft) (Page 11)	5. for each state s in the episode: // policy updates
+On-Policy First-Visit MC (ε-soft) (Page 11)	6. A* = argmax (Q[s][a]) // tiebreak arbitrary a
+On-Policy First-Visit MC (ε-soft) (Page 11)	7. for each action a in A(s):
+On-Policy First-Visit MC (ε-soft) (Page 11)	8. if (a == A*) P[s][a] = 1 – ε + (ε / |A(s)|) // greedy action
+On-Policy First-Visit MC (ε-soft) (Page 11)	9. else P[s][a] = ε / |A(s)| // non-greedy action
+Action (Page 12)	[x,y] (0,-1) (-1, 0) (x,y) (1, 0) (0, 1)
+Action (Page 13)	N a=0 s a=2 a=3 a=1
+Example ε-soft calculation (Page 14)	1. for each state s in the episode: // policy updates
+Example ε-soft calculation (Page 14)	2. A* = argmax (Q[s][a]) // tiebreak arbitrary a
+Example ε-soft calculation (Page 14)	3. for each action a in A(s):
+Example ε-soft calculation (Page 14)	4. if (a == A*) P[s][a] = 1 – ε + (ε / |A(s)|) // greedy action
+Example ε-soft calculation (Page 14)	5. else P[s][a] = ε / |A(s)| // non-greedy action Example: ε = 0.1, |A(s)| = 5
+Example ε-soft calculation (Page 14)	Q[s][a] = [10, 20, 15, 5, 10]
+Example ε-soft calculation (Page 14)	A* = 1 (index of best action)
+Example ε-soft calculation (Page 14)	P[s][a] = [0.1/5, 1-0.1+0.1/5, 0.1/05, 0.1/05, 0.1/05]
+Example ε-soft calculation (Page 14)	P[s][a] = [0.02, 0.92, 0.02, 0.02, 0.02]
+Example ε-soft calculation (Page 14)	●
+Off-Policy Methods (Page 15)	Learning Control Methods Dilemma:
+Off-Policy Methods (Page 15)	We wish to learn action values based on what we currently
+Off-Policy Methods (Page 15)	believe to be optimal behavior BUT, we need to behave non-optimally in order to explore the
+Off-Policy Methods (Page 15)	(s,a) space and actually FIND the optimal behavior On-Policy ε-soft methods compromise by finding a near-
+Off-Policy Methods (Page 15)	optimal policy that still explores Another approach is to use two policies
+Off-Policy Methods (Page 15)	Target Policy – Policy being learned over time
+Off-Policy Methods (Page 15)	Behavior Policy – Used to generate episodes / explore
+Off-Policy Methods (Page 15)	Learning from data ‘off’ the target policy = Off-Policy Learning
+Off-Policy Methods (Page 15)	●
+Off-Policy Methods (Page 16)	On-Policy methods are simpler
+Off-Policy Methods (Page 16)	Off-Policy methods require additional concepts,
+Off-Policy Methods (Page 16)	higher variance, and converge slower than on- policy methods Off-Policy are more powerful in general
+Off-Policy Methods (Page 16)	On-Policy methods can be considered a special
+Off-Policy Methods (Page 16)	● case of Off-Policy where both policies are same
+Temporal Difference Learning (Page 17)	Chapter 6 in RL Textbook http://incompleteideas.net/book/first/ebook/node60.html
+Temporal-Difference Learning (Page 18)	Central idea of reinforcement learning
+Temporal-Difference Learning (Page 18)	Combines MC and DP ideas
+Temporal-Difference Learning (Page 18)	Like MC: TD methods learn directly from
+Temporal-Difference Learning (Page 18)	experience without a model of the environment Like DP: TD method update incorporates other
+Temporal-Difference Learning (Page 18)	learned estimates without waiting for final outcome of an episode (bootstrapping) Relationship between TD, MC, DP is important
+Temporal-Difference Learning (Page 18)	●
+TD Prediction (Page 19)	Both TD and MC use experience to predict
+TD Prediction (Page 19)	the value of a policy π MC methods wait for an episode to finish,
+TD Prediction (Page 19)	then update values based on final return TD methods do not wait, and instead
+TD Prediction (Page 19)	● update values after each time step
+TD Prediction Target (Page 20)	MC updates use episode return
+TD Prediction Target (Page 20)	V(S ) = V(S ) + α*[G – V(S )] t t t t TD uses next reward + next state value
+TD Prediction Target (Page 20)	V(S ) = V(S ) + α*[R + γV(S ) - V(S )] t t t+1 t+1 t TD updates immediately on transitioning to S
+TD Prediction Target (Page 20)	t+1 and receiving reward R t+1 TD’s target for update is R + γV(S )
+TD Prediction Target (Page 20)	t+1 t+1 This is called TD(0), or one-step TD
+TD Prediction Target (Page 20)	●
+Tabular TD(0) for estimating v (Page 21)	π Initialization (Input Policy P): V[s] = initial value for each state
+Tabular TD(0) for estimating v (Page 21)	1. Repeat Forever (for each episode): S = initialize starting state for episode
+Tabular TD(0) for estimating v (Page 21)	1. Repeat (for each step of episode)
+Tabular TD(0) for estimating v (Page 21)	2. A = action given by P for S
+Tabular TD(0) for estimating v (Page 21)	3. S’ = do action A at S
+Tabular TD(0) for estimating v (Page 21)	4. R = reward from doing A at S
+Tabular TD(0) for estimating v (Page 21)	5. V(S) = V(S) + α*[R + γV(S’) – V(S)]
+Tabular TD(0) for estimating v (Page 21)	6. S = S’
+Tabular TD(0) for estimating v (Page 21)	7.
+TD Value Estimate (Page 22)	TD uses next state value in estimate
+TD Value Estimate (Page 22)	Recall from Dynamic Programming
+TD Value Estimate (Page 22)	v (s) = E [G ] (1) π π t = E [R + γG ] (2) π t+1 t+1 = E [R + γv (S )] (3) π t+1 π t+1 MC methods use (1) as the target
+TD Value Estimate (Page 22)	DP / TD methods use (3) as the target
+TD Value Estimate (Page 22)	TD combines MC sampling with DP update
+TD Value Estimate (Page 22)	●
+TD Advantages (Page 25)	DP requires model, MC/TD do not
+TD Advantages (Page 25)	MC waits until episode finished to do
+TD Advantages (Page 25)	update, TD is on-line, incremental Sometimes episodes are very long
+TD Advantages (Page 25)	Continuing tasks have no episodes
+TD Advantages (Page 25)	TD methods tend to converge faster than
+TD Advantages (Page 25)	● fixed-size α MC methods, but not proven
+Temporal Difference Control (Page 26)	We have discussed TD for prediction:
+Temporal Difference Control (Page 26)	Given a policy π, what is V (s)? π How do we now update the policy?
+Temporal Difference Control (Page 26)	We will follow GPI
+Temporal Difference Control (Page 26)	Like MC, we have the same exploitation
+Temporal Difference Control (Page 26)	vs. exploration trade-off Like MC, we have On-Policy and Off-Policy
+Temporal Difference Control (Page 26)	●
+On-Policy TD Control (Page 27)	On-Policy: Need to estimate Q (s,a) for
+On-Policy TD Control (Page 27)	π the current behaviour policy π and for all state-action pairs (s,a) Can use the same TD method discussed
+On-Policy TD Control (Page 27)	previously for estimating v (s) π We can then update the policy π to be
+On-Policy TD Control (Page 27)	● greedy w.r.t. Q (s,a) π
+SARSA: On-Policy TD Control (Page 28)	Episodes consist of State, Action, Reward
+SARSA: On-Policy TD Control (Page 28)	Previously we learned for TD to transition between
+SARSA: On-Policy TD Control (Page 28)	episode states and update V(s) V(S ) = V(S ) + α*[R + γV(S ) - V(S )] t t t+1 t+1 t SARSA transitions between (s,a) pairs:
+SARSA: On-Policy TD Control (Page 28)	● Q(S ,A ) = Q(S ,A ) + α*[R +γQ(S ,A )-Q(S ,A )] t t t t t+1 t+1 t+1 t t
+SARSA: On-Policy TD Control (Page 29)	Q(S ,A ) = Q(S ,A ) + α*[R + γQ(S ,A ) - Q(S ,A )] t t t t t+1 t+1 t+1 t t If S is terminal, Q(S ,A ) is 0
+SARSA: On-Policy TD Control (Page 29)	t+1 t+1 t+1 Policy update is greedy w.r.t. Q(S,A)
+SARSA: On-Policy TD Control (Page 29)	Formula makes use of the following data:
+SARSA: On-Policy TD Control (Page 29)	● (S , A , R , S , A ) = SARSA t t t+1 t+1 t+1
+SARSA using ε-greedy (Page 30)	Initialization (): Q[s][a] = initial value for each (s,a), Q[terminal] = 0
+SARSA using ε-greedy (Page 30)	1. Repeat Forever (for each episode): S = initialize starting state for episode
+SARSA using ε-greedy (Page 30)	1. A = choose action at S using ε-greedy on Q[S][:]
+SARSA using ε-greedy (Page 30)	2. Repeat (for each step of episode)
+SARSA using ε-greedy (Page 30)	3. R, S’ = Take action A at state S
+SARSA using ε-greedy (Page 30)	4. A’ = Choose A’ from S’ using ε-greedy on Q[S’][:]
+SARSA using ε-greedy (Page 30)	5. Q[S][A] = Q[S][A] + α*(R + γQ[S’][A’] – Q[S][A])
+SARSA using ε-greedy (Page 30)	6. S = S’, A = A'
+SARSA using ε-greedy (Page 30)	7.
+Q-Learning: Off-Policy TD Control (Page 31)	1989, early breakthrough in RL
+Q-Learning: Off-Policy TD Control (Page 31)	Off-Policy TD control algorithm
+Q-Learning: Off-Policy TD Control (Page 31)	Q(S ,A ) = Q(S ,A ) + α*[R + γmax Q (S ,a) - Q(S ,A )] t t t t t+1 a t+1 t t The learned Q directly approximates q*, the
+Q-Learning: Off-Policy TD Control (Page 31)	● optimal action-value function, no matter which behaviour policy is being followed
+Q-Learning using ε-greedy (Page 32)	Initialization (): Q[s][a] = initial value for each (s,a), Q[terminal] = 0
+Q-Learning using ε-greedy (Page 32)	1. Repeat Forever (for each episode): S = initialize starting state for episode
+Q-Learning using ε-greedy (Page 32)	1. Repeat (for each step of episode)
+Q-Learning using ε-greedy (Page 32)	2. A = choose action at S using ε-greedy on Q[S][:]
+Q-Learning using ε-greedy (Page 32)	3. R, S’ = take action A at state S
+Q-Learning using ε-greedy (Page 32)	4. Q[S][A] = Q[S][A] + α*(R + γmax Q[S’][a] – Q[S][A])
+Q-Learning using ε-greedy (Page 32)	5. a S = S’
+Q-Learning using ε-greedy (Page 32)	6.
+Q-Learning: Off Policy (Page 33)	Why is Q-Learning considered off-policy?
+Q-Learning: Off Policy (Page 33)	If the algorithm estimates the value function of
+Q-Learning: Off Policy (Page 33)	the policy generating the data, the method is called on-policy SARSA learns value of its policy, which does
+Q-Learning: Off Policy (Page 33)	some sort of exploration Q-Learning learns value of a policy which does
+Q-Learning: Off Policy (Page 33)	● not explore, since it takes the max action value
+The Cliff (Page 35)	Actions: Up, Down, Left, Right
+The Cliff (Page 35)	-1 reward at each time step
+The Cliff (Page 35)	If you step over ‘The Cliff’ you get a
+The Cliff (Page 35)	reward of -100 and go back to start Designed to show the difference between
+The Cliff (Page 35)	● Q-Learning and SARSA methods on-line performance
+Cliff: SARSA vs. Q-Learning (Page 36)	Epsilon Greedy E = 0.1
+Cliff: SARSA vs. Q-Learning (Page 37)	Q-Learning learns values for the optimal policy,
+Cliff: SARSA vs. Q-Learning (Page 37)	which travels at the edge of the cliff This results in it sometimes falling off the cliff in
+Cliff: SARSA vs. Q-Learning (Page 37)	training because of e-greedy action selection SARSA takes e-greedy action selection into
+Cliff: SARSA vs. Q-Learning (Page 37)	account and learns the longer but ‘safer’ path On-Policy: Learns values of the policy that guides it
+Cliff: SARSA vs. Q-Learning (Page 37)	Even though Q-Learning learns the values of the
+Cliff: SARSA vs. Q-Learning (Page 37)	● optimal policy, its online performance is worse
+Exam Questions (Page 39)	What does it mean to be an on-policy or an off-
+Exam Questions (Page 39)	policy RL method? Why is SARSA considered on-policy while Q-
+Exam Questions (Page 39)	Learning is considered off-policy Why do SARSA and Q-Learning produce different
+Exam Questions (Page 39)	paths through the example of The Cliff? TD methods borrow ideas from both MC and DP,
+Exam Questions (Page 39)	what are they and why? SARSA + Q-Learning algorithms
+Exam Questions (Page 39)	●

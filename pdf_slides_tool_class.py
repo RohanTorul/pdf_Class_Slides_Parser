@@ -6,19 +6,27 @@ from collections import defaultdict
 
 
 class PDFFlashcardGenerator:
-    def __init__(self, pdf_path, ignore_file=None, ignore_pages_file=None):
+    def __init__(self, pdf_path, ignore_file=None, ignore_pages_file=None, custom_search_file=None):
         self.pdf_path = pdf_path
         self.ignore_patterns = self.load_ignore_patterns(ignore_file)
         self.ignore_pages = self.parse_ignore_pages_file(ignore_pages_file)
+        self.custom_search_patterns = self.load_custom_search_patterns(custom_search_file)
         
         self.flashcards = []
         self.titles_and_sections = []
         self.key_terms = defaultdict(list)
         self.links = defaultdict(list)
+        self.custom_search_matches = defaultdict(list)
         
-        self.bullet_point_pattern = re.compile(r'[\●](.*)\s*')
+        self.bullet_point_pattern = re.compile(r'[(\d.)(\●)](.*)\s*')
     
     def load_ignore_patterns(self, file_path):
+        if not file_path:
+            return []
+        with open(file_path, "r", encoding="utf-8") as f:
+            return [re.compile(line.strip()) for line in f if line.strip()]
+
+    def load_custom_search_patterns(self, file_path):
         if not file_path:
             return []
         with open(file_path, "r", encoding="utf-8") as f:
@@ -89,6 +97,11 @@ class PDFFlashcardGenerator:
                     font, color, size = style
                     color_tuple = tuple(color)
 
+                    # Custom search pattern matching
+                    for pattern in self.custom_search_patterns:
+                        if pattern.search(phrase_text):
+                            self.custom_search_matches[pattern.pattern].append((phrase_text, page_num))
+
                     if size >= 32:
                         self.titles_and_sections.append((phrase_text, page_num))
 
@@ -150,6 +163,13 @@ class PDFFlashcardGenerator:
             txtfile.write(f"{', '.join(map(str, sorted(self.ignore_pages)))}\n")
             txtfile.write("\n")
 
+            txtfile.write("Custom Search Matches:\n")
+            for pattern, matches in self.custom_search_matches.items():
+                txtfile.write(f"Pattern: {pattern}\n")
+                for text, page_num in matches:
+                    txtfile.write(f"[Page {page_num}] {text}\n")
+                txtfile.write("\n")
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="PDF to Flashcards & Key Terms extractor")
@@ -159,9 +179,10 @@ if __name__ == "__main__":
     parser.add_argument("--summary", default="pdf_summary.txt", help="Output text summary file")
     parser.add_argument("--ignore", help="Path to text file with regex patterns for phrases to ignore")
     parser.add_argument("--ignore-pages-file", help="Path to text file with pages/ranges to ignore")
+    parser.add_argument("--search", help="Path to text file with regex patterns to search for and report in summary")
     args = parser.parse_args()
 
-    generator = PDFFlashcardGenerator(args.pdf_path, args.ignore, args.ignore_pages_file)
+    generator = PDFFlashcardGenerator(args.pdf_path, args.ignore, args.ignore_pages_file, args.search)
     generator.process_pdf()
     generator.write_csv(args.csv)
     generator.write_anki_txt(args.anki)

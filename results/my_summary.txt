@@ -1,0 +1,194 @@
+Titles / Subsections:
+[Page 2] On-Policy vs. Off-Policy
+[Page 3] On-Policy vs. Off-Policy
+[Page 4] MC Policy Iteration
+[Page 5] Off-Policy Example
+[Page 6] On-Policy vs. Off-Policy
+[Page 7] On-Policy Control Methods
+[Page 8] ε
+[Page 8] -Greedy On-Policy Control
+[Page 9] Monte-
+[Page 9] Carlo GPI / ε
+[Page 9] -soft
+[Page 10] On-Policy Policy Optimality
+[Page 11] On-Policy First-
+[Page 11] Visit MC (ε
+[Page 11] -soft)
+[Page 14] Example
+[Page 14] ε
+[Page 14] -soft calculation
+[Page 15] Off-Policy Methods
+[Page 16] Off-Policy Methods
+[Page 17] Temporal Difference Learning
+[Page 18] Temporal-Difference Learning
+[Page 19] TD Prediction
+[Page 20] TD Prediction Target
+[Page 21] Tabular TD(0) for estimating v
+[Page 22] TD Value Estimate
+[Page 25] TD Advantages
+[Page 26] Temporal Difference Control
+[Page 27] On-Policy TD Control
+[Page 28] SARSA: On-Policy TD Control
+[Page 29] SARSA: On-Policy TD Control
+[Page 30] SARSA using ε
+[Page 30] -greedy
+[Page 31] Q-Learning: Off-Policy TD Control
+[Page 32] Q-
+[Page 32] Learning using ε
+[Page 32] -greedy
+[Page 33] Q-Learning: Off Policy
+[Page 34] Example: The Cliff
+[Page 35] The Cliff
+[Page 36] Cliff: SARSA vs. Q-Learning
+[Page 37] Cliff: SARSA vs. Q-Learning
+[Page 39] Exam Questions
+
+Key Terms (Bold, Italic, Underline, Colored Phrases):
+Lecture 19 [Pages 1]
+http://incompleteideas.net/book/first/ebook/node54.html [Pages 2]
+current policy to update values [Pages 3]
+values to update the policy [Pages 3]
+same policy [Pages 3, 6]
+different policy [Pages 3, 6]
+MCPolicyIteration [Pages 4]
+4. [Pages 4, 5]
+while [Pages 4, 5]
+On-Policy: We generate episodes based on policy we update [Pages 4]
+RandomMCIteration [Pages 5]
+generate episode with random actions [Pages 5]
+Off-Policy: Policy we form does not guide episode generation [Pages 5]
+that takes exploration into [Pages 6]
+account [Pages 6, 37]
+after learning [Pages 6]
+soft [Pages 7]
+Chance [Pages 7]
+is > 0 [Pages 7]
+ε/|A(s)| [Pages 8]
+1- [Pages 8]
+ε+ε/|A(s)| [Pages 8]
+many (s,a) pairs go unvisited [Pages 9]
+with [Pages 10]
+the randomness of ε [Pages 10]
+-greedy included [Pages 10]
+ε [Pages 10]
+-greedy will encounter them [Pages 10]
+not ‘globally optimal’ [Pages 10]
+Initialization [Pages 11, 21, 30, 32]
+Repeat Forever [Pages 11, 21, 30, 32]
+for [Pages 11, 14]
+if [Pages 11, 14]
+else [Pages 11, 14]
+Action [Pages 12, 13]
+[x,y] [Pages 12]
+N [Pages 13]
+1. [Pages 14]
+20 [Pages 14]
+1-0.1+0.1/5 [Pages 14]
+learn action values [Pages 15]
+believe [Pages 15]
+behave non-optimally in order to explore [Pages 15]
+that still explores [Pages 15]
+two [Pages 15]
+Target [Pages 15]
+Behavior [Pages 15]
+simpler [Pages 16]
+more powerful [Pages 16]
+http://incompleteideas.net/book/first/ebook/node60.html [Pages 17]
+Central idea [Pages 18]
+Combines MC and DP [Pages 18]
+directly from [Pages 18]
+experience [Pages 18]
+incorporates other [Pages 18]
+learned estimates [Pages 18]
+predict [Pages 19]
+the value of a policy [Pages 19]
+wait for an episode to finish [Pages 19]
+do not wait [Pages 19]
+each time step [Pages 19]
+episode return [Pages 20]
+reward [Pages 20]
+next state [Pages 20]
+immediately [Pages 20]
+Repeat [Pages 21, 30, 32]
+converge faster [Pages 25]
+Why [Pages 33]
+learns value of its policy [Pages 33]
+not explore [Pages 33]
+max [Pages 33]
+optimal policy [Pages 37]
+falling off the cliff in [Pages 37]
+training [Pages 37]
+takes e-greedy action selection into [Pages 37]
+online [Pages 37]
+
+Links:
+http://incompleteideas.net/book/first/ebook/node54.html [Pages 2]
+http://incompleteideas.net/book/first/ebook/node60.html [Pages 17]
+
+Ignored Pages:
+
+
+Custom Search Matches:
+Pattern: ([\wα-ωΑ-ΩπΠΣσΔ∞≤≥±∑√°\+\-\*/\^×÷\(\)\[\]\{\}\s]+[=><≤≥][^=><≤≥]+)
+[Page 4] q[s][a] = initial value estimates
+[Page 4] p[s][a] = initially equiprobable policy
+[Page 4] e = generate episode based on p
+[Page 4] q = update value estimates based on episode returns
+[Page 4] p = update policy to choose actions with max values
+[Page 5] q[s][a] = initial value estimates
+[Page 5] p[s][a] = initially equiprobable policy
+[Page 5] q = update value estimates based on episode returns
+[Page 5] p = update policy to choose actions with max values
+[Page 7] is > 0
+[Page 7] (a|s) > 0 for all s, a
+[Page 8] ) > ε for all s, a, and some ε > 0
+[Page 11] Q[s][a] = initial value for each state
+[Page 11] P[s][a] = initially equiprobable policy
+[Page 11] G = the return (sum of r) following first occurrence of (s,a) in E
+[Page 11] Q[s][a] = Q[s][a] + stepSize * (G
+[Page 11] A* = argmax
+[Page 11] (a == A*) P[s][a] = 1
+[Page 11] P[s][a] = ε / |A(s)|
+[Page 13] a=0
+[Page 13] a=2
+[Page 13] a=3
+[Page 13] a=1
+[Page 14] A* = argmax
+[Page 14] (a == A*) P[s][a] = 1
+[Page 14] P[s][a] = ε / |A(s)|
+[Page 14] Example: ε = 0.1, |A(s)| = 5
+[Page 14] Q[s][a] = [10,
+[Page 14] A* = 1 (index of best action)
+[Page 14] P[s][a] = [0.1/5,
+[Page 14] P[s][a] = [0.02, 0.92, 0.02, 0.02, 0.02]
+[Page 15] Learning from data ‘off’ the target policy = Off
+[Page 20] ) = V(S
+[Page 20] ) = V(S
+[Page 21] V[s] = initial value for each state
+[Page 21] S = initialize starting state for episode
+[Page 21] A = action given by P for S
+[Page 21] S’ = do action A at S
+[Page 21] R = reward from doing A at S
+[Page 21] V(S) = V(S) +
+[Page 21] S = S’
+[Page 22] (s) = E
+[Page 28] ) = V(S
+[Page 28] ) = Q(S
+[Page 29] ) = Q(S
+[Page 29] ) = SARSA
+[Page 30] Q[s][a] = initial value for each (s,a), Q[terminal] = 0
+[Page 30] S = initialize starting state for episode
+[Page 30] A = choose action at S using ε
+[Page 30] R, S’ = Take action A at state S
+[Page 30] A’ = Choose A’ from S’ using ε
+[Page 30] Q[S][A] = Q[S][A] +
+[Page 30] S = S’, A = A'
+[Page 31] ) = Q(S
+[Page 32] Q[s][a] = initial value for each (s,a), Q[terminal] = 0
+[Page 32] S = initialize starting state for episode
+[Page 32] A = choose action at S using ε
+[Page 32] R, S’ = take action A at state S
+[Page 32] Q[S][A] = Q[S][A] +
+[Page 32] S = S’
+[Page 36] E = 0.1
+
