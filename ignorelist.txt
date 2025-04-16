@@ -1,4 +1,3 @@
-●
 COMP 3200
 COMP 3200 (Page \d+)
 (Page \d+)

@@ -4,7 +4,6 @@ import re
 import argparse
 from collections import defaultdict
 
-# Helpers
 def is_black_or_white(rgb):
     return rgb in [(0,),(0, 0, 0), (1, 1, 1)]
 
@@ -83,21 +82,21 @@ args = parser.parse_args()
 ignore_patterns = load_ignore_patterns(args.ignore)
 ignore_pages = parse_ignore_pages_file(args.ignore_pages_file)
 
-# Data storage
 flashcards = []
 titles_and_sections = []
 key_terms = defaultdict(list)
 links = defaultdict(list)
 
-# Process PDF
+bullet_point_pattern  = re.compile(r'[\●](.*)\s*')
+
+
 with pdfplumber.open(args.pdf_path) as pdf:
     for page_num, page in enumerate(pdf.pages, start=1):
         if page_num in ignore_pages:
-            continue  # Skip ignored pages
+            continue
 
         words = page.extract_words(use_text_flow=True, extra_attrs=["fontname", "size", "non_stroking_color"])
 
-        # Group phrases by line & style
         phrases = []
         if words:
             current_phrase = []
@@ -122,7 +121,6 @@ with pdfplumber.open(args.pdf_path) as pdf:
             if current_phrase:
                 phrases.append((current_phrase, last_style, last_top))
 
-        # Process phrases
         for phrase_words, style, top in phrases:
             phrase_text = " ".join(w['text'] for w in phrase_words).strip()
             if not phrase_text or is_ignored(phrase_text, ignore_patterns):
@@ -131,32 +129,36 @@ with pdfplumber.open(args.pdf_path) as pdf:
             font, color, size = style
             color_tuple = tuple(color)
 
-            # Titles/Subsections: large font or Bold text
-            if size >= 30 or "Bold" in font:
+            if size >= 32:
                 titles_and_sections.append((phrase_text, page_num))
 
-            # Key terms: colored (non black/white) OR bold/italic/underline
             if not is_black_or_white(color_tuple):
                 key_terms[phrase_text].append(page_num)
             elif any(k in font for k in ["Bold", "Italic", "Underline"]):
                 key_terms[phrase_text].append(page_num)
 
-            # Links
             if is_url(phrase_text):
                 links[phrase_text].append(page_num)
 
-        # Flashcards: first non-ignored line is question, rest are answers
         lines = page.extract_text().split('\n') if page.extract_text() else []
         if lines:
             lines = [line.strip() for line in lines if line.strip() and not is_ignored(line.strip(), ignore_patterns)]
             if lines:
                 question = lines[0]
+                current_answer = ""
                 for line in lines[1:]:
-                    flashcards.append((f"{question} (Page {page_num})", line))
+                    if bullet_point_pattern.match(line):
+                        if current_answer:
+                            flashcards.append((f"{question} (Page {page_num})", current_answer.replace("●", "").strip()))
+                        current_answer = line  # start a new point
+                    else:
+                        current_answer += " " + line  # same point, continue
 
-# Write outputs
+                if current_answer:
+                    flashcards.append((f"{question} (Page {page_num})", current_answer.strip()))
+
 write_csv(args.csv, flashcards)
 write_anki_txt(args.anki, flashcards)
 write_summary(args.summary, titles_and_sections, key_terms, links, ignore_pages)
 
-print(f"✅ Done!\n- Flashcards: {args.csv}, {args.anki}\n- Summary: {args.summary}")
+print(f"👾 Done!\n- Flashcards: {args.csv}, {args.anki}\n- Summary: {args.summary}")
