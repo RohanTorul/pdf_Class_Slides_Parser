@@ -22,7 +22,7 @@ def run_flashcard_tool(pdf_path, csv_path, anki_path, summary_path, ignore_phras
         ignore_pages_file=ignore_pages_file
     )
     generator.run()
-    return "✅ Flashcards generated!"
+    return " Flashcards generated!"
 
 gr.Interface(
     fn=run_flashcard_tool,
