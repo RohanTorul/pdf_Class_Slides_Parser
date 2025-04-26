@@ -188,4 +188,4 @@ if __name__ == "__main__":
     generator.write_anki_txt(args.anki)
     generator.write_summary(args.summary)
 
-    print(f"👾 Done!\n- Flashcards: {args.csv}, {args.anki}\n- Summary: {args.summary}")
+    print(f" Done!\n- Flashcards: {args.csv}, {args.anki}\n- Summary: {args.summary}")
